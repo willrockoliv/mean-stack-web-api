@@ -9,6 +9,7 @@ db.bind('pergunta');
 
 var service = {};
 
+service.getAll = getAll;
 service.authenticate = authenticate;
 service.getById = getById;
 service.create = create;
@@ -16,6 +17,18 @@ service.update = update;
 service.delete = _delete;
 
 module.exports = service;
+
+function getAll() {
+    var deferred = Q.defer();
+
+    db.pergunta.find({}).toArray(function (err, perguntas) {
+        if (err) deferred.reject(err.name + ': ' + err.message);
+
+        deferred.resolve(perguntas);
+    });
+
+    return deferred.promise;
+}
 
 function authenticate(username, password) {
     var deferred = Q.defer();
