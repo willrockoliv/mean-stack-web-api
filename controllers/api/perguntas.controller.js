@@ -4,6 +4,7 @@ var router = express.Router();
 var perguntaService = require('services/pergunta.service');
 
 // routes
+router.get('/getAll', getPerguntas);
 router.post('/register', registerPergunta);
 router.get('/:_id', getCurrentPergunta);
 router.put('/:_id', updatePergunta);
@@ -11,7 +12,15 @@ router.delete('/:_id', deletePergunta);
 
 module.exports = router;
 
-
+function getPerguntas(req, res) {
+    perguntaService.getAll()
+        .then(function (perguntas) {
+            res.send(perguntas);
+        })
+        .catch(function (err) {
+            res.status(400).send(err);
+        });
+}
 
 function registerPergunta(req, res) {
     perguntaService.create(req.body)
